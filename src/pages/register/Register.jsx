@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
+import Button from "../../components/button/Button";
 
 const Register = () => {
   return (
@@ -38,9 +39,7 @@ const Register = () => {
         <Link to="/" className="underline">
           you allready have account?
         </Link>
-        <button className="bg-secondary text-white px-10 py-2 rounded-md font-bold">
-          Register
-        </button>
+        <Button label="Register" />
       </form>
     </section>
   );

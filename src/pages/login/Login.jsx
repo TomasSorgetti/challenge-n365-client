@@ -1,6 +1,7 @@
 import { useState } from "react";
 import logo from "../../assets/logo.png";
 import { Link } from "react-router-dom";
+import Button from "../../components/button/Button";
 
 const Login = () => {
   const [form, setForm] = useState({
@@ -8,9 +9,14 @@ const Login = () => {
     password: "",
   });
 
+  const handleChange = () => {};
+  const handleSubmit = () => {
+    console.log("submit");
+  };
   return (
     <section className="h-screen flex items-center justify-center text-white">
       <form
+        onSubmit={handleSubmit}
         action=""
         className="bg-primary w-[400px] h-[450px] p-10 rounded-lg flex flex-col items-center justify-between"
       >
@@ -36,9 +42,7 @@ const Login = () => {
         <Link to="/register" className="underline">
           you dont have account?
         </Link>
-        <button className="bg-secondary text-white px-10 py-2 rounded-md font-bold">
-          Login
-        </button>
+        <Button label="Login" />
       </form>
     </section>
   );
