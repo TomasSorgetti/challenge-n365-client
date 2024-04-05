@@ -8,13 +8,13 @@ import { ProtectedLoginRoute, ProtectedRoutes } from "./utils/ProtectedRoutes";
 function App() {
   return (
     <Routes>
-      {/* <Route element={<ProtectedLoginRoute />}>
-      </Route> */}
-      <Route path="/" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      {/* <Route element={<ProtectedRoutes />}>
-      </Route> */}
-      <Route path="/home" element={<Home />} />
+      <Route element={<ProtectedLoginRoute />}>
+        <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Route>
+      <Route element={<ProtectedRoutes />}>
+        <Route path="/home" element={<Home />} />
+      </Route>
     </Routes>
   );
 }
