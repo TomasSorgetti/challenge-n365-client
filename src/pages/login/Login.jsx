@@ -1,18 +1,39 @@
 import { useState } from "react";
 import logo from "../../assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/button/Button";
+import { URL_BASE } from "../../utils/constants";
+import axios from "axios";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
 
-  const handleChange = () => {};
-  const handleSubmit = () => {
-    console.log("submit");
+  const handleChange = (event) => {
+    const property = event.target.name;
+    const value = event.target.value;
+
+    setForm({ ...form, [property]: value });
   };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (form.email && form.password) {
+      const URL = `${URL_BASE}/user/login`;
+      await axios.post(URL, form).then((response) => {
+        if (!response) throw new Error("error to login");
+        const token = response.data;
+        if (token) {
+          localStorage.setItem("token", token);
+          navigate("/home");
+        }
+      });
+    }
+  };
+
   return (
     <section className="h-screen flex items-center justify-center text-white">
       <form
@@ -28,6 +49,9 @@ const Login = () => {
               className="h-10 rounded-sm p-2 text-primary"
               type="text"
               placeholder="email@mail.com"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
             />
           </div>
           <div className="flex flex-col">
@@ -36,6 +60,9 @@ const Login = () => {
               className="h-10 rounded-sm p-2 text-primary"
               type="password"
               placeholder="********"
+              name="password"
+              value={form.password}
+              onChange={handleChange}
             />
           </div>
         </div>
