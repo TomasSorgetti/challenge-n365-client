@@ -18,7 +18,7 @@ function App() {
       <Route element={<ProtectedRoutes />}>
         <Route path="/home" element={<Home />} />
         <Route path="/new-payment" element={<NewPayment />} />
-        <Route path="/payment/:id" element={<Payment />} />
+        <Route path="/payment/:paymentId" element={<Payment />} />
       </Route>
       <Route path="*" element={<ErrorPage />} />
     </Routes>
