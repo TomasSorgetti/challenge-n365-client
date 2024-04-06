@@ -5,6 +5,7 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import { ProtectedLoginRoute, ProtectedRoutes } from "./utils/ProtectedRoutes";
 import ErrorPage from "./pages/error/ErrorPage";
+import NewPayment from "./pages/newPayment/NewPayment";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       </Route>
       <Route element={<ProtectedRoutes />}>
         <Route path="/home" element={<Home />} />
+        <Route path="/new-payment" element={<NewPayment />} />
       </Route>
       <Route path="*" element={<ErrorPage />} />
     </Routes>

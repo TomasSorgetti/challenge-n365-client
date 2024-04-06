@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { URL_BASE } from "../../utils/constants";
 import Button from "../button/Button";
 import axios from "axios";
@@ -64,7 +65,15 @@ const Searchbar = ({ search, setSearch }) => {
           <option value="desc">Z-A</option>
         </select>
       </div>
-      <Button label={"Download Excel"} handleClick={handleDownload} />
+      <div className="flex gap-10">
+        <Link
+          className="bg-green border-[1px] border-solid border-green text-primary h-10 w-10 flex items-center justify-center rounded-lg font-semibold text-2xl text-center pb-1 hover:text-white hover:bg-primary hover:border-white focus:font-bold"
+          to={"/new-payment"}
+        >
+          +
+        </Link>
+        <Button label={"Download Excel"} handleClick={handleDownload} />
+      </div>
     </div>
   );
 };
