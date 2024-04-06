@@ -4,6 +4,7 @@ import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import { ProtectedLoginRoute, ProtectedRoutes } from "./utils/ProtectedRoutes";
+import ErrorPage from "./pages/error/ErrorPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Route element={<ProtectedRoutes />}>
         <Route path="/home" element={<Home />} />
       </Route>
+      <Route path="*" element={<ErrorPage />} />
     </Routes>
   );
 }
