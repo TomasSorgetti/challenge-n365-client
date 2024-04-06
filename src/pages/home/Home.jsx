@@ -4,6 +4,7 @@ import Searchbar from "../../components/searchbar/Searchbar";
 import axios from "axios";
 import { URL_BASE } from "../../utils/constants";
 import { debounce } from "lodash";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [data, setData] = useState([]);
@@ -48,16 +49,23 @@ const Home = () => {
           <Searchbar search={search} setSearch={setSearch} />
         </section>
         <div className="mt-2 flex flex-col gap-2">
+          <ul className="flex w-full bg-primary text-white justify-between px-10 py-2">
+            <li>Amount</li>
+            <li>Type of payment</li>
+            <li>Addressee</li>
+            <li>Payment Date</li>
+          </ul>
           {data?.map(({ id, amount, paymentType, addressee, paymentDate }) => (
-            <div
+            <Link
+              to={`/payment/${id}`}
               key={id}
-              className="flex justify-between px-6 bg-gray-200 h-16 items-center"
+              className="flex justify-between px-10 bg-gray-200 h-16 items-center"
             >
-              <span>{amount}</span>
-              <span>{paymentType}</span>
-              <span>{addressee}</span>
-              <span>{paymentDate}</span>
-            </div>
+              <span className="">{amount}</span>
+              <span className="">{paymentType}</span>
+              <span className="">{addressee}</span>
+              <span className="">{paymentDate}</span>
+            </Link>
           ))}
         </div>
       </main>

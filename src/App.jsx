@@ -6,6 +6,7 @@ import Register from "./pages/register/Register";
 import { ProtectedLoginRoute, ProtectedRoutes } from "./utils/ProtectedRoutes";
 import ErrorPage from "./pages/error/ErrorPage";
 import NewPayment from "./pages/newPayment/NewPayment";
+import Payment from "./pages/payment/Payment";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Route element={<ProtectedRoutes />}>
         <Route path="/home" element={<Home />} />
         <Route path="/new-payment" element={<NewPayment />} />
+        <Route path="/payment/:id" element={<Payment />} />
       </Route>
       <Route path="*" element={<ErrorPage />} />
     </Routes>

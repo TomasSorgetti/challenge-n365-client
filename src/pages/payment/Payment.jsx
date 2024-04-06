@@ -1,11 +1,13 @@
 import { useState } from "react";
 import Button from "../../components/button/Button";
 import Navigation from "../../components/navigation/Navigation";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { URL_BASE } from "../../utils/constants";
 
-const NewPayment = () => {
+const Payment = () => {
+  const { id } = useParams();
+  console.log(id);
   const [form, setForm] = useState({
     amount: 0,
     paymentType: "",
@@ -101,4 +103,4 @@ const NewPayment = () => {
   );
 };
 
-export default NewPayment;
+export default Payment;
