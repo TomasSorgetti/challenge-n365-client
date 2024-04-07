@@ -7,6 +7,7 @@ import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [errors, setErrors] = useState("");
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -23,14 +24,19 @@ const Login = () => {
     event.preventDefault();
     if (form.email && form.password) {
       const URL = `${URL_BASE}/user/login`;
-      await axios.post(URL, form).then((response) => {
-        if (!response) throw new Error("error to login");
-        const token = response.data;
-        if (token) {
-          localStorage.setItem("token", token);
-          navigate("/home");
-        }
-      });
+      try {
+        await axios.post(URL, form).then((response) => {
+          if (!response) throw new Error("error to login");
+          const token = response.data;
+          if (token) {
+            localStorage.setItem("token", token);
+            navigate("/home");
+          }
+        });
+      } catch (error) {
+        if (error.response.data.error) setErrors(error.response.data.error);
+        console.log(error);
+      }
     }
   };
 
@@ -39,9 +45,12 @@ const Login = () => {
       <form
         onSubmit={handleSubmit}
         action=""
-        className="bg-primary w-[400px] h-[450px] p-10 rounded-lg flex flex-col items-center justify-between"
+        className="bg-primary w-[400px] p-10 rounded-lg flex flex-col items-center"
       >
-        <img src={logo} alt="blaze logo" />
+        <div className="h-20 w-full flex flex-col items-center">
+          <img className="w-32" src={logo} alt="blaze logo" />
+          <span className="text-red-600">{errors}</span>
+        </div>
         <div className="w-full flex flex-col gap-4">
           <div className="flex flex-col">
             <label htmlFor="">Email:</label>
@@ -66,10 +75,12 @@ const Login = () => {
             />
           </div>
         </div>
-        <Link to="/register" className="underline">
-          you dont have account?
-        </Link>
-        <Button label="Login" />
+        <div className="flex flex-col gap-6 mt-10">
+          <Link to="/register" className="underline">
+            you dont have account?
+          </Link>
+          <Button label="Login" />
+        </div>
       </form>
     </section>
   );
