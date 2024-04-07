@@ -4,6 +4,8 @@ import Navigation from "../../components/navigation/Navigation";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { URL_BASE } from "../../utils/constants";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const NewPayment = () => {
   const [form, setForm] = useState({
@@ -19,17 +21,43 @@ const NewPayment = () => {
 
     setForm({ ...form, [property]: value });
   };
-  const handleSubmit = async () => {
+
+  const notifyOk = () => toast.success("You have create a new payment");
+  const notifyError = () => toast.error("Error creating new payment");
+  const notifyWarn = () => toast.warn("Complete all fields");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (
+      !form.amount ||
+      !form.paymentType ||
+      !form.addressee ||
+      !form.paymentDate
+    )
+      notifyWarn();
     if (form.amount && form.paymentType && form.addressee && form.paymentDate) {
       const URL = `${URL_BASE}/payments`;
       const token = localStorage.getItem("token");
       try {
-        await axios.post(URL, form, {
-          headers: {
-            authorization: `${token}`,
-          },
-        });
+        await axios
+          .post(URL, form, {
+            headers: {
+              authorization: `${token}`,
+            },
+          })
+          .then((response) => {
+            if (response) {
+              notifyOk();
+              setForm({
+                amount: 0,
+                paymentType: "",
+                addressee: "",
+                paymentDate: "",
+              });
+            }
+          });
       } catch (error) {
+        notifyError();
         console.log("Error to post new payment", error);
       }
     }
@@ -38,6 +66,7 @@ const NewPayment = () => {
     <div className="flex flex-col h-screen">
       <Navigation />
       <main className="flex-1 flex items-center justify-center">
+        <ToastContainer position="bottom-left" autoClose={2000} />
         <Link
           to={"/home"}
           className="absolute top-32 left-10 font-bold text-2xl"

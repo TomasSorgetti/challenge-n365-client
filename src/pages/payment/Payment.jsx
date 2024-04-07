@@ -4,6 +4,8 @@ import Navigation from "../../components/navigation/Navigation";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { URL_BASE } from "../../utils/constants";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Payment = () => {
   const navigate = useNavigate();
@@ -33,7 +35,7 @@ const Payment = () => {
     };
 
     getData();
-  }, [paymentId]);
+  }, []);
 
   useEffect(() => {
     setForm({
@@ -51,15 +53,37 @@ const Payment = () => {
     setForm({ ...form, [property]: value });
   };
 
-  const handleUpdate = async () => {
+  const notifyOk = () => toast.success("You have create a new payment");
+  const notifyError = () => toast.error("Error creating new payment");
+  const notifyWarn = () => toast.warn("Complete all fields");
+
+  const notifyDelete = () => toast.success("You have delete payment");
+  const notifyErrorDelete = () => toast.error("Error at delete payment");
+
+  const handleUpdate = async (event) => {
+    event.preventDefault();
+    if (
+      !form.amount ||
+      !form.paymentType ||
+      !form.addressee ||
+      !form.paymentDate
+    )
+      notifyWarn();
     if (form.amount && form.paymentType && form.addressee && form.paymentDate) {
       try {
-        await axios.put(URL, form, {
-          headers: {
-            authorization: `${token}`,
-          },
-        });
+        await axios
+          .put(URL, form, {
+            headers: {
+              authorization: `${token}`,
+            },
+          })
+          .then((response) => {
+            if (response) {
+              notifyOk();
+            }
+          });
       } catch (error) {
+        notifyError();
         console.log("Error updating payment", error);
       }
     }
@@ -73,9 +97,15 @@ const Payment = () => {
           },
         })
         .then((response) => {
-          if (response) navigate("/home");
+          if (response) {
+            notifyDelete();
+            setTimeout(() => {
+              navigate("/home");
+            }, 2000);
+          }
         });
     } catch (error) {
+      notifyErrorDelete();
       console.log("Error to delete payment", error);
     }
   };
@@ -84,6 +114,7 @@ const Payment = () => {
     <div className="flex flex-col h-screen">
       <Navigation />
       <main className="flex-1 flex items-center justify-center">
+        <ToastContainer position="bottom-left" autoClose={2000} />
         <Link
           to={"/home"}
           className="absolute top-32 left-10 font-bold text-2xl"
