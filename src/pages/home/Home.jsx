@@ -6,6 +6,7 @@ import { URL_BASE } from "../../utils/constants";
 import { debounce } from "lodash";
 import Cards from "../../components/cards/Cards";
 import Pagination from "../../components/pagination/Pagination";
+import Table from "../../components/table/Table";
 
 const Home = () => {
   const [data, setData] = useState({
@@ -16,13 +17,13 @@ const Home = () => {
     name: "",
     filter: "",
     order: "asc",
-    orderBy: "date",
+    orderBy: "amount",
     page: 1,
   });
 
   useEffect(() => {
     const getData = async () => {
-      const URL = `${URL_BASE}/payments?name=${search.name}&order=${search.order}&filter=${search.filter}&page=${search.page}`;
+      const URL = `${URL_BASE}/payments?name=${search.name}&order=${search.order}&orderBy=${search.orderBy}&filter=${search.filter}&page=${search.page}`;
       const token = localStorage.getItem("token");
       await axios(URL, {
         headers: {
@@ -52,12 +53,7 @@ const Home = () => {
           <Searchbar search={search} setSearch={setSearch} />
         </section>
         <div className="mt-2 flex flex-col gap-2">
-          <ul className="flex w-full bg-primary text-white justify-between px-10 py-2">
-            <li>Amount</li>
-            <li>Type of payment</li>
-            <li>Addressee</li>
-            <li>Payment Date</li>
-          </ul>
+          <Table setSearch={setSearch} />
           <Cards data={data.payments} />
           <Pagination data={data.pages} setSearch={setSearch} search={search} />
         </div>

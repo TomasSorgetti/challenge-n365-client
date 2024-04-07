@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { URL_BASE } from "../../utils/constants";
-import Button from "../button/Button";
 import axios from "axios";
+import exportIcon from "../../assets/export-icon.png";
 
 const Searchbar = ({ search, setSearch }) => {
   const handleChange = (event) => {
@@ -36,38 +36,22 @@ const Searchbar = ({ search, setSearch }) => {
   };
 
   return (
-    <div className="h-16 bg-primary flex items-center justify-between px-10 rounded-t-sm">
-      <input
-        className="h-10 rounded-sm w-80"
-        type="text"
-        onChange={handleChange}
-        name="name"
-        value={search.name}
-      />
-      <div className="flex gap-4">
-        <select
-          onChange={handleChange}
-          name="filter"
-          className="border-[1px] border-black rounded-[3px] h-7"
+    <section className="h-16 bg-primary flex items-center justify-between px-10 rounded-t-sm">
+      <article>
+        <div>
+          <div>
+            <label >min</label>
+            <input type="text" />
+          </div>
+        </div>
+      </article>
+      <article className="flex gap-10">
+        <button
+          className="text-white flex items-center hover:underline"
+          onClick={handleDownload}
         >
-          <option value="all">all</option>
-          <option value="amount">amount</option>
-          <option value="type">type</option>
-          <option value="addressee">addressee</option>
-          <option value="date">date</option>
-        </select>
-        <select
-          onChange={handleChange}
-          name="order"
-          className="border-[1px] border-black rounded-[3px] h-7"
-        >
-          <option value="asc">A-Z</option>
-          <option value="desc">Z-A</option>
-        </select>
-      </div>
-      <div className="flex gap-10">
-        <button className="text-white" onClick={handleDownload}>
-          Export
+          <img className="w-6 mt-1" src={exportIcon} alt="export icon" />
+          <span>Export</span>
         </button>
         <Link
           className="bg-secondary border-[1px] border-solid border-secondary text-white px-10 py-2 rounded-md font-semibold hover:bg-primary hover:border-white focus:font-bold"
@@ -75,8 +59,8 @@ const Searchbar = ({ search, setSearch }) => {
         >
           Add Payment
         </Link>
-      </div>
-    </div>
+      </article>
+    </section>
   );
 };
 

@@ -9,9 +9,9 @@ const Cards = ({ data }) => {
           key={id}
           className="flex justify-between px-10 bg-gray-200 h-16 items-center"
         >
-          <span className="">{amount}</span>
-          <span className="">{paymentType}</span>
           <span className="">{addressee}</span>
+          <span className="">{paymentType}</span>
+          <span className="">{amount}</span>
           <span className="">{paymentDate}</span>
         </Link>
       ))}
