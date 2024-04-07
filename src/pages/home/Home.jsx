@@ -4,21 +4,25 @@ import Searchbar from "../../components/searchbar/Searchbar";
 import axios from "axios";
 import { URL_BASE } from "../../utils/constants";
 import { debounce } from "lodash";
-import { Link } from "react-router-dom";
+import Cards from "../../components/cards/Cards";
+import Pagination from "../../components/pagination/Pagination";
 
 const Home = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({
+    payments: [],
+    pages: 1,
+  });
   const [search, setSearch] = useState({
     name: "",
-    filter: "all",
+    filter: "",
     order: "asc",
+    orderBy: "date",
     page: 1,
   });
 
   useEffect(() => {
     const getData = async () => {
-      const URL = `${URL_BASE}/payments`;
-      // const URL = `${URL_BASE}/payments?filter=${search.filter}&order=${search.order}&name=${search.name}`;
+      const URL = `${URL_BASE}/payments?name=${search.name}&order=${search.order}&filter=${search.filter}&page=${search.page}`;
       const token = localStorage.getItem("token");
       await axios(URL, {
         headers: {
@@ -26,20 +30,19 @@ const Home = () => {
         },
       })
         .then((response) => {
-          console.log(response);
           setData(response.data);
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
         });
     };
-    getData();
-    // const debouncedGetData = debounce(getData, 300);
-    // debouncedGetData();
-    // return () => {
-    //   debouncedGetData.cancel();
-    // };
-  }, []);
+
+    const debouncedGetData = debounce(getData, 100);
+    debouncedGetData();
+    return () => {
+      debouncedGetData.cancel();
+    };
+  }, [search]);
 
   return (
     <>
@@ -55,18 +58,8 @@ const Home = () => {
             <li>Addressee</li>
             <li>Payment Date</li>
           </ul>
-          {data?.map(({ id, amount, paymentType, addressee, paymentDate }) => (
-            <Link
-              to={`/payment/${id}`}
-              key={id}
-              className="flex justify-between px-10 bg-gray-200 h-16 items-center"
-            >
-              <span className="">{amount}</span>
-              <span className="">{paymentType}</span>
-              <span className="">{addressee}</span>
-              <span className="">{paymentDate}</span>
-            </Link>
-          ))}
+          <Cards data={data.payments} />
+          <Pagination data={data.pages} setSearch={setSearch} search={search} />
         </div>
       </main>
     </>

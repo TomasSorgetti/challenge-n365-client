@@ -112,7 +112,7 @@ const NewPayment = () => {
               />
             </div>
             <div className="flex flex-col">
-              <label className="text-white font-semibold">Date:</label>
+              <label className="text-white font-semibold">Payment Date:</label>
               <input
                 type="date"
                 name="paymentDate"

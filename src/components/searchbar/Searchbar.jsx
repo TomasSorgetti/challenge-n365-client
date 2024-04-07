@@ -13,7 +13,7 @@ const Searchbar = ({ search, setSearch }) => {
 
   const handleDownload = async (event) => {
     event.preventDefault();
-    const URL = `${URL_BASE}/payments/exportToExcel`;
+    const URL = `${URL_BASE}/excel`;
     const token = localStorage.getItem("token");
     try {
       const response = await axios.get(URL, {
@@ -66,13 +66,15 @@ const Searchbar = ({ search, setSearch }) => {
         </select>
       </div>
       <div className="flex gap-10">
+        <button className="text-white" onClick={handleDownload}>
+          Export
+        </button>
         <Link
-          className="bg-green border-[1px] border-solid border-green text-primary h-10 w-10 flex items-center justify-center rounded-lg font-semibold text-2xl text-center pb-1 hover:text-white hover:bg-primary hover:border-white focus:font-bold"
+          className="bg-secondary border-[1px] border-solid border-secondary text-white px-10 py-2 rounded-md font-semibold hover:bg-primary hover:border-white focus:font-bold"
           to={"/new-payment"}
         >
-          +
+          Add Payment
         </Link>
-        <Button label={"Download Excel"} handleClick={handleDownload} />
       </div>
     </div>
   );
