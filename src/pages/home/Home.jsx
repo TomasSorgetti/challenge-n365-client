@@ -5,8 +5,10 @@ import axios from "axios";
 import { URL_BASE } from "../../utils/constants";
 import { debounce } from "lodash";
 import Cards from "../../components/cards/Cards";
-import Pagination from "../../components/pagination/Pagination";
 import Table from "../../components/table/Table";
+
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 const Home = () => {
   const [data, setData] = useState({
@@ -17,7 +19,7 @@ const Home = () => {
     name: "",
     filter: "",
     order: "asc",
-    orderBy: "amount",
+    orderBy: "paymentDate",
     page: 1,
   });
 
@@ -45,6 +47,13 @@ const Home = () => {
     };
   }, [search]);
 
+  const handlePageChange = (event, page) => {
+    const pageNumber = parseInt(page);
+    if (!isNaN(pageNumber)) {
+      setSearch({ ...search, page: pageNumber });
+    }
+  };
+
   return (
     <>
       <Navigation />
@@ -53,9 +62,19 @@ const Home = () => {
           <Searchbar search={search} setSearch={setSearch} />
         </section>
         <div className="mt-2 flex flex-col gap-2">
-          <Table setSearch={setSearch} />
+          <Table setSearch={setSearch} search={search} />
           <Cards data={data.payments} />
-          <Pagination data={data.pages} setSearch={setSearch} search={search} />
+          <div className="w-full flex justify-center">
+            <Stack spacing={2}>
+              <Pagination
+                count={data.pages}
+                page={search.page}
+                onChange={handlePageChange}
+                variant="outlined"
+                shape="rounded"
+              />
+            </Stack>
+          </div>
         </div>
       </main>
     </>

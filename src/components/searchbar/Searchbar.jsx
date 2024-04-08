@@ -4,13 +4,6 @@ import axios from "axios";
 import exportIcon from "../../assets/export-icon.png";
 
 const Searchbar = ({ search, setSearch }) => {
-  const handleChange = (event) => {
-    const property = event.target.name;
-    const value = event.target.value;
-
-    setSearch({ ...search, [property]: value });
-  };
-
   const handleDownload = async (event) => {
     event.preventDefault();
     const URL = `${URL_BASE}/excel`;
@@ -36,16 +29,15 @@ const Searchbar = ({ search, setSearch }) => {
   };
 
   return (
-    <section className="h-16 bg-primary flex items-center justify-between px-10 rounded-t-sm">
-      <article>
+    <sec className="h-16 bg-primary flex items-center justify-between px-10 rounded-t-sm">
+      <div>
         <div>
-          <div>
-            <label >min</label>
-            <input type="text" />
-          </div>
+          
+          <input type="text" />
+          <input type="text" />
         </div>
-      </article>
-      <article className="flex gap-10">
+      </div>
+      <div className="flex gap-10">
         <button
           className="text-white flex items-center hover:underline"
           onClick={handleDownload}
@@ -59,8 +51,8 @@ const Searchbar = ({ search, setSearch }) => {
         >
           Add Payment
         </Link>
-      </article>
-    </section>
+      </div>
+    </sec>
   );
 };
 

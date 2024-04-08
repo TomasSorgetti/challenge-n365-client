@@ -1,15 +1,25 @@
 import arrowDown from "../../assets/arrow-down.png";
 import arrowUp from "../../assets/arrow-up.png";
 
-const Table = ({ setSearch }) => {
-  const handleClick = (event, orderBy, order) => {
-    event.preventDefault();
+const Table = ({ setSearch, search }) => {
+  const handleClick = (orderBy, order) => {
     setSearch((prevSearch) => ({
       ...prevSearch,
       orderBy: orderBy,
       order: order,
     }));
   };
+  const handleFilterApply = (filter) => {
+    setSearch({ ...search, filter: filter, page: 1 });
+  };
+  const handleChange = (event) => {
+    const property = event.target.name;
+    const value = event.target.value;
+
+    setSearch({ ...search, [property]: value });
+    handleFilterApply(value);
+  };
+
   return (
     <ul className="flex w-full bg-primary text-white justify-between px-10 py-2">
       {/* addressee */}
@@ -28,6 +38,18 @@ const Table = ({ setSearch }) => {
       {/* type of payment */}
       <li className="flex gap-10">
         <span>Type of payment</span>
+        <select
+          className="text-primary"
+          onChange={handleChange}
+          name="filter"
+          id=""
+        >
+          <option value="">all</option>
+          <option value="check">check</option>
+          <option value="debit">debit</option>
+          <option value="transfer">transfer</option>
+          <option value="credit">credit</option>
+        </select>
         <div className="flex gap-2">
           <button onClick={() => handleClick("paymentType", "asc")}>
             <img className="w-3" src={arrowDown} alt="order ascendent" />

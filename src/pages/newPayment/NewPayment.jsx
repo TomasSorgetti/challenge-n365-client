@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Button from "../../components/button/Button";
 import Navigation from "../../components/navigation/Navigation";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -91,14 +90,18 @@ const NewPayment = () => {
               <label className="text-white font-semibold">
                 Type of payment:
               </label>
-              <input
-                type="text"
-                name="paymentType"
-                value={form.paymentType}
+              <select
+                className="text-primary h-10 rounded-sm p-2"
                 onChange={handleChange}
-                className="h-10 rounded-sm p-2 text-primary"
-                placeholder="something"
-              />
+                name="paymentType"
+                id=""
+              >
+                <option value=""></option>
+                <option value="check">check</option>
+                <option value="debit">debit</option>
+                <option value="transfer">transfer</option>
+                <option value="credit">credit</option>
+              </select>
             </div>
             <div className="flex flex-col">
               <label className="text-white font-semibold">Addressee:</label>
@@ -123,7 +126,9 @@ const NewPayment = () => {
               />
             </div>
           </section>
-          <Button label={"Send"} />
+          <button className="bg-secondary border-[1px] border-solid border-secondary text-white px-10 py-2 rounded-md font-semibold hover:bg-primary hover:border-white focus:font-bold">
+            Add
+          </button>
         </form>
       </main>
     </div>
