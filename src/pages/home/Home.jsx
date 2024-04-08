@@ -20,12 +20,16 @@ const Home = () => {
     filter: "",
     order: "asc",
     orderBy: "paymentDate",
+    minAmount: "",
+    maxAmount: "",
+    minDate: "",
+    maxDate: "",
     page: 1,
   });
 
   useEffect(() => {
     const getData = async () => {
-      const URL = `${URL_BASE}/payments?name=${search.name}&order=${search.order}&orderBy=${search.orderBy}&filter=${search.filter}&page=${search.page}`;
+      const URL = `${URL_BASE}/payments?name=${search.name}&order=${search.order}&orderBy=${search.orderBy}&filter=${search.filter}&page=${search.page}&minAmount=${search.minAmount}&maxAmount=${search.maxAmount}&minDate=${search.minDate}&maxDate=${search.maxDate}`;
       const token = localStorage.getItem("token");
       await axios(URL, {
         headers: {
@@ -54,12 +58,16 @@ const Home = () => {
     }
   };
 
+
   return (
     <>
       <Navigation />
       <main className="mx-40">
         <section className="mt-20">
-          <Searchbar search={search} setSearch={setSearch} />
+          <Searchbar
+            search={search}
+            setSearch={setSearch}
+          />
         </section>
         <div className="mt-2 flex flex-col gap-2">
           <Table setSearch={setSearch} search={search} />

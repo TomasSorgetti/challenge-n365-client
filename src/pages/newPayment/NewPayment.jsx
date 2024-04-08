@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const NewPayment = () => {
   const [form, setForm] = useState({
-    amount: 0,
+    amount: "",
     paymentType: "",
     addressee: "",
     paymentDate: "",
@@ -34,7 +34,7 @@ const NewPayment = () => {
       !form.paymentDate
     )
       notifyWarn();
-    if (form.amount && form.paymentType && form.addressee && form.paymentDate) {
+    else {
       const URL = `${URL_BASE}/payments`;
       const token = localStorage.getItem("token");
       try {
@@ -48,7 +48,7 @@ const NewPayment = () => {
             if (response) {
               notifyOk();
               setForm({
-                amount: 0,
+                amount: "",
                 paymentType: "",
                 addressee: "",
                 paymentDate: "",
@@ -72,37 +72,18 @@ const NewPayment = () => {
         >{`< Home`}</Link>
         <form
           onSubmit={handleSubmit}
+          onReset={() =>
+            setForm({
+              amount: "",
+              paymentType: null,
+              addressee: "",
+              paymentDate: "",
+            })
+          }
           className="bg-primary w-[400px] h-[500px] p-10 rounded-lg flex flex-col items-center justify-between px-10"
         >
           <h1 className="text-white">Add new payment</h1>
           <section className="flex flex-col w-full gap-4">
-            <div className="flex flex-col">
-              <label className="text-white font-semibold">Amount:</label>
-              <input
-                type="number"
-                name="amount"
-                value={form.amount}
-                onChange={handleChange}
-                className="h-10 rounded-sm p-2 text-primary"
-              />
-            </div>
-            <div className="flex flex-col">
-              <label className="text-white font-semibold">
-                Type of payment:
-              </label>
-              <select
-                className="text-primary h-10 rounded-sm p-2"
-                onChange={handleChange}
-                name="paymentType"
-                id=""
-              >
-                <option value=""></option>
-                <option value="check">check</option>
-                <option value="debit">debit</option>
-                <option value="transfer">transfer</option>
-                <option value="credit">credit</option>
-              </select>
-            </div>
             <div className="flex flex-col">
               <label className="text-white font-semibold">Addressee:</label>
               <input
@@ -114,6 +95,41 @@ const NewPayment = () => {
                 placeholder="something"
               />
             </div>
+            <div className="flex flex-col">
+              <label className="text-white font-semibold">
+                Type of payment:
+              </label>
+              <select
+                className="text-primary h-10 rounded-sm p-2"
+                onChange={handleChange}
+                name="paymentType"
+                key={form.paymentType}
+                value={form.paymentType}
+                id=""
+              >
+                <option value=""></option>
+                <option value="check">check</option>
+                <option value="debit">debit</option>
+                <option value="transfer">transfer</option>
+                <option value="credit">credit</option>
+              </select>
+            </div>
+            <div className="flex flex-col">
+              <label className="text-white font-semibold">Amount:</label>
+              <div className="flex">
+                <div className="h-10 w-10 bg-white flex items-center justify-center rounded-l-sm">
+                  $
+                </div>
+                <input
+                  type="number"
+                  name="amount"
+                  value={form.amount}
+                  onChange={handleChange}
+                  className="h-10 p-2 w-full text-primary rounded-r-sm"
+                />
+              </div>
+            </div>
+
             <div className="flex flex-col">
               <label className="text-white font-semibold">Payment Date:</label>
               <input

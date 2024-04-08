@@ -1,7 +1,6 @@
 import { useState } from "react";
 import logo from "../../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import Button from "../../components/button/Button";
 import { URL_BASE } from "../../utils/constants";
 import axios from "axios";
 
@@ -79,7 +78,9 @@ const Login = () => {
           <Link to="/register" className="underline">
             you dont have account?
           </Link>
-          <Button label="Login" />
+          <button className="bg-secondary border-[1px] border-solid border-secondary text-white px-10 py-2 rounded-md font-semibold hover:bg-primary hover:border-white focus:font-bold">
+            Login
+          </button>
         </div>
       </form>
     </section>

@@ -11,7 +11,7 @@ const Cards = ({ data }) => {
         >
           <span className="">{addressee}</span>
           <span className="">{paymentType}</span>
-          <span className="">{amount}</span>
+          <span className="">${amount}</span>
           <span className="">{paymentDate}</span>
         </Link>
       ))}

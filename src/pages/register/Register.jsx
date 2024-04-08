@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
-import Button from "../../components/button/Button";
 import { URL_BASE } from "../../utils/constants";
 import axios from "axios";
 import validate from "./Validation";
@@ -127,7 +126,9 @@ const Register = () => {
           <Link to="/" className="underline">
             you already have account?
           </Link>
-          <Button label="Register" />
+          <button className="bg-secondary border-[1px] border-solid border-secondary text-white px-10 py-2 rounded-md font-semibold hover:bg-primary hover:border-white focus:font-bold">
+            Register
+          </button>
         </div>
       </form>
     </section>

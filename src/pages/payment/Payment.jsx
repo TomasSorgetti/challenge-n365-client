@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Button from "../../components/button/Button";
 import Navigation from "../../components/navigation/Navigation";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -171,7 +170,9 @@ const Payment = () => {
               />
             </div>
           </section>
-          <Button label={"Update"} />
+          <button className="bg-secondary border-[1px] border-solid border-secondary text-white px-10 py-2 rounded-md font-semibold hover:bg-primary hover:border-white focus:font-bold">
+            Update
+          </button>
         </form>
         <button
           onClick={handleDelete}
