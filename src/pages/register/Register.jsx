@@ -62,7 +62,7 @@ const Register = () => {
     <section className="h-screen flex items-center justify-center text-white">
       <form
         onSubmit={handleSubmit}
-        className="bg-primary w-[400px] p-10 rounded-lg flex flex-col items-center justify-between"
+        className="bg-primary w-11/12 sm:w-7/12 md:w-6/12 lg:w-[400px] pt-4 pb-10 px-8 sm:px-10 lg:p-10 rounded-lg flex flex-col items-center justify-between"
       >
         <div className="h-20 w-full flex flex-col items-center">
           <img className="w-32" src={logo} alt="blaze logo" />
@@ -120,7 +120,7 @@ const Register = () => {
           </div>
         </div>
         <div
-          className="flex flex-col gap-4 mt-10
+          className="flex flex-col gap-4 mt-6 lg:mt-10
         "
         >
           <Link to="/" className="underline">

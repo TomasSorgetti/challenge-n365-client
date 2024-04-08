@@ -6,9 +6,10 @@ import { URL_BASE } from "../../utils/constants";
 import { debounce } from "lodash";
 import Cards from "../../components/cards/Cards";
 import Table from "../../components/table/Table";
-
+import exportIcon from "../../assets/export-icon.png";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [data, setData] = useState({
@@ -57,33 +58,78 @@ const Home = () => {
       setSearch({ ...search, page: pageNumber });
     }
   };
+  const handleDownload = async (event) => {
+    event.preventDefault();
+    const URL = `${URL_BASE}/excel`;
 
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(URL, {
+        headers: {
+          authorization: `${token}`,
+        },
+        responseType: "blob",
+      });
+      const blob = new Blob([response.data]);
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.setAttribute("download", "payment_list.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("Error to download excel:", error);
+    }
+  };
 
   return (
     <>
       <Navigation />
-      <main className="mx-40">
-        <section className="mt-20">
-          <Searchbar
-            search={search}
-            setSearch={setSearch}
-          />
+      <main className="lg:mt-10">
+        <article className="flex gap-10 p-4 lg:mx-auto lg:w-11/12 justify-center lg:justify-end ">
+          <button
+            className="text-primary font-bold flex items-center hover:underline"
+            onClick={handleDownload}
+          >
+            <img className="w-6" src={exportIcon} alt="export icon" />
+            <span>Export</span>
+          </button>
+          <Link
+            className="bg-secondary border-[1px] border-solid border-secondary text-white rounded-md font-semibold hover:bg-primary hover:border-white focus:font-bold px-4 py-2 min-w-fit"
+            to={"/new-payment"}
+          >
+            Add Payment
+          </Link>
+        </article>
+        <Searchbar search={search} setSearch={setSearch} />
+        <section className="w-11/12 overflow-x-auto mx-auto my-2">
+          <table
+            className="w-full
+        "
+          >
+            <thead>
+              <Table setSearch={setSearch} search={search} />
+            </thead>
+            <Cards data={data.payments} />
+          </table>
         </section>
-        <div className="mt-2 flex flex-col gap-2">
-          <Table setSearch={setSearch} search={search} />
-          <Cards data={data.payments} />
-          <div className="w-full flex justify-center">
-            <Stack spacing={2}>
-              <Pagination
-                count={data.pages}
-                page={search.page}
-                onChange={handlePageChange}
-                variant="outlined"
-                shape="rounded"
-              />
-            </Stack>
-          </div>
-        </div>
+
+        <section
+          className={`w-full my-10 flex justify-center ${
+            data.pages === 1 && "hidden"
+          }`}
+        >
+          <Stack spacing={2}>
+            <Pagination
+              count={data.pages}
+              page={search.page}
+              onChange={handlePageChange}
+              variant="outlined"
+              shape="rounded"
+            />
+          </Stack>
+        </section>
       </main>
     </>
   );

@@ -1,7 +1,3 @@
-import { Link } from "react-router-dom";
-import { URL_BASE } from "../../utils/constants";
-import axios from "axios";
-import exportIcon from "../../assets/export-icon.png";
 import { useState } from "react";
 
 const Searchbar = ({ search, setSearch }) => {
@@ -35,126 +31,67 @@ const Searchbar = ({ search, setSearch }) => {
     });
   };
 
-  // const handleDownload = async (event) => {
-  //   event.preventDefault();
-  //   console.log("sended");
-  //   `${URL_BASE}/excel?name=${search.name}&order=${search.order}&orderBy=${search.orderBy}&filter=${search.filter}&minAmount=${search.minAmount}&maxAmount=${search.maxAmount}&minDate=${search.minDate}&maxDate=${search.maxDate}`;
-  //   const token = localStorage.getItem("token");
-  //   try {
-  //     const response = await axios.get(URL, {
-  //       headers: {
-  //         authorization: `${token}`,
-  //       },
-  //       responseType: "blob",
-  //     });
-  //     const blob = new Blob([response.data]);
-  //     const downloadUrl = window.URL.createObjectURL(blob);
-  //     const link = document.createElement("a");
-  //     link.href = downloadUrl;
-  //     link.setAttribute("download", "payment_list.xlsx");
-  //     document.body.appendChild(link);
-  //     link.click();
-  //     link.remove();
-  //   } catch (error) {
-  //     console.error("Error to download excel:", error);
-  //   }
-  // };
-
-  const handleDownload = async (event) => {
-    event.preventDefault();
-    const URL = `${URL_BASE}/excel`;
-
-    const token = localStorage.getItem("token");
-    try {
-      const response = await axios.get(URL, {
-        headers: {
-          authorization: `${token}`,
-        },
-        responseType: "blob",
-      });
-      const blob = new Blob([response.data]);
-      const downloadUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = downloadUrl;
-      link.setAttribute("download", "payment_list.xlsx");
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-    } catch (error) {
-      console.error("Error to download excel:", error);
-    }
-  };
-
   return (
-    <section className="h-16 bg-primary flex items-center justify-between px-6 rounded-t-sm">
-      <article>
+    <section className="bg-primary flex flex-col gap-4 items-center justify-between p-6 lg:flex-row lg:w-11/12 lg:mx-auto lg:items-end">
+      <article className="mr-2 w-full lg:w-auto">
         <input
-          className="h-10 p-2 w-60"
+          className="h-10 p-2 rounded-sm w-full lg:w-80"
           type="text"
           onChange={handleChange}
           name="name"
           value={search.name}
-          placeholder="something..."
+          placeholder="Addressee..."
         />
       </article>
-      <article className="flex gap-10 text-white justify-start">
-        <div className="flex gap-2">
+      <article className="flex flex-col gap-4 w-full text-white justify-start lg:flex-row lg:items-end">
+        <div className="flex gap-2 flex-col lg:w-full">
           <label className="">Amount:</label>
-          <input
-            className="w-16 text-primary"
-            type="text"
-            name="minAmount"
-            value={filter.minAmount}
-            onChange={handleMinMaxChange}
-          />
-          to
-          <input
-            className="w-16 text-primary"
-            type="text"
-            name="maxAmount"
-            value={filter.maxAmount}
-            onChange={handleMinMaxChange}
-          />
+          <div className="flex gap-2">
+            <input
+              className="h-10 w-full text-primary px-2"
+              type="number"
+              name="minAmount"
+              value={filter.minAmount}
+              onChange={handleMinMaxChange}
+              placeholder="0"
+            />
+            to
+            <input
+              className="h-10 w-full text-primary px-2"
+              type="number"
+              name="maxAmount"
+              value={filter.maxAmount}
+              onChange={handleMinMaxChange}
+              placeholder="300"
+            />
+          </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col gap-2 lg:w-full">
           <label>Date:</label>
-          <input
-            className="w-24 text-primary"
-            type="date"
-            name="minDate"
-            value={filter.minDate}
-            onChange={handleMinMaxChange}
-          />
-          to
-          <input
-            className="w-24 text-primary"
-            type="date"
-            name="maxDate"
-            value={filter.maxDate}
-            onChange={handleMinMaxChange}
-          />
+          <div className="flex gap-2">
+            <input
+              className="h-10 w-full text-primary"
+              type="date"
+              name="minDate"
+              value={filter.minDate}
+              onChange={handleMinMaxChange}
+            />
+            to
+            <input
+              className="h-10 w-full text-primary"
+              type="date"
+              name="maxDate"
+              value={filter.maxDate}
+              onChange={handleMinMaxChange}
+            />
+          </div>
         </div>
         <button
           onClick={handleMinMaxClick}
-          className="font-bold underline cursor-pointer px-4"
+          className="font-bold underline cursor-pointer p-4"
         >
           Apply
         </button>
-      </article>
-      <article className="flex gap-10">
-        <button
-          className="text-white flex items-center hover:underline"
-          onClick={handleDownload}
-        >
-          <img className="w-6 mt-1" src={exportIcon} alt="export icon" />
-          <span>Export</span>
-        </button>
-        <Link
-          className="bg-secondary border-[1px] border-solid border-secondary text-white px-10 py-2 rounded-md font-semibold hover:bg-primary hover:border-white focus:font-bold"
-          to={"/new-payment"}
-        >
-          Add Payment
-        </Link>
       </article>
     </section>
   );

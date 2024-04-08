@@ -21,9 +21,9 @@ const Table = ({ setSearch, search }) => {
   };
 
   return (
-    <ul className="flex w-full bg-primary text-white justify-between px-10 py-2">
+    <tr className="flex w-full mb-2 bg-primary text-white justify-between px-10 py-2">
       {/* addressee */}
-      <li className="flex gap-10">
+      <td className="flex gap-10 basis-[30%] justify-start">
         <span>Addressee</span>
         <div className="flex gap-2">
           <button onClick={() => handleClick("addressee", "asc")}>
@@ -33,10 +33,10 @@ const Table = ({ setSearch, search }) => {
             <img className="w-3" src={arrowUp} alt="order descendent" />
           </button>
         </div>
-      </li>
+      </td>
 
       {/* type of payment */}
-      <li className="flex gap-10">
+      <td className="flex gap-4 basis-[30%] justify-start">
         <span>Type of payment</span>
         <select
           className="text-primary"
@@ -58,10 +58,10 @@ const Table = ({ setSearch, search }) => {
             <img className="w-3" src={arrowUp} alt="order descendent" />
           </button>
         </div>
-      </li>
+      </td>
 
       {/* amount */}
-      <li className="flex gap-10">
+      <td className="flex gap-4 basis-[20%] justify-start">
         <span>Amount</span>
         <div className="flex gap-2">
           <button onClick={() => handleClick("amount", "asc")}>
@@ -71,10 +71,10 @@ const Table = ({ setSearch, search }) => {
             <img className="w-3" src={arrowUp} alt="order descendent" />
           </button>
         </div>
-      </li>
+      </td>
 
       {/* payment date */}
-      <li className="flex gap-10">
+      <td className="flex gap-2 basis-[20%]  justify-start">
         <span>Payment Date</span>
         <div className="flex gap-2">
           <button onClick={() => handleClick("paymentDate", "asc")}>
@@ -84,8 +84,8 @@ const Table = ({ setSearch, search }) => {
             <img className="w-3" src={arrowUp} alt="order descendent" />
           </button>
         </div>
-      </li>
-    </ul>
+      </td>
+    </tr>
   );
 };
 

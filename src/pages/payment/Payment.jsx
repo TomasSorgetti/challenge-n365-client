@@ -5,6 +5,8 @@ import axios from "axios";
 import { URL_BASE } from "../../utils/constants";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
+import deleteIcon from "../../assets/delete-icon.png";
 
 const Payment = () => {
   const navigate = useNavigate();
@@ -88,31 +90,42 @@ const Payment = () => {
     }
   };
   const handleDelete = async () => {
-    try {
-      await axios
-        .delete(URL, {
-          headers: {
-            authorization: `${token}`,
-          },
-        })
-        .then((response) => {
-          if (response) {
-            notifyDelete();
-            setTimeout(() => {
-              navigate("/home");
-            }, 2000);
-          }
-        });
-    } catch (error) {
-      notifyErrorDelete();
-      console.log("Error to delete payment", error);
-    }
+    Swal.fire({
+      icon: "error",
+      text: "Are you sure to delete this payment?",
+      confirmButtonText: "Yes",
+      cancelButtonText: "Cancel",
+      showCancelButton: true,
+      showCloseButton: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios
+            .delete(URL, {
+              headers: {
+                authorization: `${token}`,
+              },
+            })
+            .then((response) => {
+              if (response) {
+                notifyDelete();
+                setTimeout(() => {
+                  navigate("/home");
+                }, 2000);
+              }
+            });
+        } catch (error) {
+          notifyErrorDelete();
+          console.log("Error to delete payment", error);
+        }
+      }
+    });
   };
 
   return (
     <div className="flex flex-col h-screen">
       <Navigation />
-      <main className="flex-1 flex items-center justify-center">
+      <main className="flex-1 flex flex-col gap-32 items-center justify-center">
         <ToastContainer position="bottom-left" autoClose={2000} />
         <Link
           to={"/home"}
@@ -122,7 +135,7 @@ const Payment = () => {
           onSubmit={handleUpdate}
           className="bg-primary w-[400px] h-[500px] p-10 rounded-lg flex flex-col items-center justify-between px-10"
         >
-          <h1 className="text-white">Update Payment</h1>
+          <h1 className="text-white font-bold text-2xl">Update Payment</h1>
           <section className="flex flex-col w-full gap-4">
             <div className="flex flex-col">
               <label className="text-white font-semibold">Amount:</label>
@@ -174,12 +187,15 @@ const Payment = () => {
             Update
           </button>
         </form>
-        <button
-          onClick={handleDelete}
-          className="absolute right-2/4 bottom-10 underline text-red-500"
-        >
-          trash
-        </button>
+        <div className="w-full flex justify-center">
+          <button
+            onClick={handleDelete}
+            className=" underline text-red-500 flex items-center gap-1"
+          >
+            <img className="w-3 mt-1" src={deleteIcon} alt="delete payment" />
+            trash
+          </button>
+        </div>
       </main>
     </div>
   );

@@ -44,7 +44,7 @@ const Login = () => {
       <form
         onSubmit={handleSubmit}
         action=""
-        className="bg-primary w-[400px] p-10 rounded-lg flex flex-col items-center"
+        className="bg-primary w-11/12 sm:w-7/12 md:w-6/12 lg:w-[400px] p-10 rounded-lg flex flex-col items-center"
       >
         <div className="h-20 w-full flex flex-col items-center">
           <img className="w-32" src={logo} alt="blaze logo" />
@@ -74,7 +74,7 @@ const Login = () => {
             />
           </div>
         </div>
-        <div className="flex flex-col gap-6 mt-10">
+        <div className="flex flex-col gap-6 mt-10 xl:mt-14">
           <Link to="/register" className="underline">
             you dont have account?
           </Link>

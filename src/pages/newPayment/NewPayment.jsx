@@ -82,7 +82,7 @@ const NewPayment = () => {
           }
           className="bg-primary w-[400px] h-[500px] p-10 rounded-lg flex flex-col items-center justify-between px-10"
         >
-          <h1 className="text-white">Add new payment</h1>
+          <h1 className="text-white font-bold text-2xl">Add payment</h1>
           <section className="flex flex-col w-full gap-4">
             <div className="flex flex-col">
               <label className="text-white font-semibold">Addressee:</label>
