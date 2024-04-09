@@ -1,7 +1,7 @@
 How to start.
 got to client > src > utils > constants.js and change URL_BASE to "http://localhost:3001"
 ![image](https://github.com/TomasSorgetti/challenge-n365-client/assets/97346262/10418d60-06b3-4887-a3e0-356bd8f042f0)
-then, in client folder, put in terminal "npm run dev"
+then, in client folder, put in terminal "npm run dev", also go to server api folder and put in terminal "npm run dev" for running the api
 
 ![image](https://github.com/TomasSorgetti/challenge-n365-client/assets/97346262/3ba739f0-a0ef-4e08-b71c-69821590fe30)
 ![image](https://github.com/TomasSorgetti/challenge-n365-client/assets/97346262/c3f39e8c-5314-495e-a8cf-d6bed228940c)
