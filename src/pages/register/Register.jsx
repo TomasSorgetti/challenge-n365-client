@@ -4,6 +4,8 @@ import logo from "../../assets/logo.png";
 import { URL_BASE } from "../../utils/constants";
 import axios from "axios";
 import validate from "./Validation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -26,8 +28,13 @@ const Register = () => {
     setForm({ ...form, [property]: value });
   };
 
+  const notifyOk = () => toast.success("You have create a new account");
+  const notifyError = () => toast.error("Error creating account");
+  const notifyWarn = () => toast.warn("Complete fields");
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     if (
       form.email &&
       form.password &&
@@ -43,11 +50,15 @@ const Register = () => {
             const token = response.data;
             if (token) {
               localStorage.setItem("token", token);
-              navigate("/home");
+              setTimeout(() => {
+                navigate("/home");
+              }, 2000);
+              notifyOk();
             }
           }
         });
       } catch (error) {
+        notifyError();
         if (error.response.data.error) {
           setErrors((prevErrors) => ({
             ...prevErrors,
@@ -56,10 +67,11 @@ const Register = () => {
         }
         console.log(error);
       }
-    }
+    } else notifyWarn();
   };
   return (
     <section className="h-screen flex items-center justify-center text-white">
+      <ToastContainer position="bottom-left" autoClose={1000} />
       <form
         onSubmit={handleSubmit}
         className="bg-primary w-11/12 sm:w-7/12 md:w-6/12 lg:w-[400px] pt-4 pb-10 px-8 sm:px-10 lg:p-10 rounded-lg flex flex-col items-center justify-between"
