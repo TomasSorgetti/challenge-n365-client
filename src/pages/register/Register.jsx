@@ -47,7 +47,7 @@ const Register = () => {
       try {
         await axios.post(URL, form).then((response) => {
           if (response) {
-            const token = response.data;
+            const token = response.data.token;
             if (token) {
               localStorage.setItem("token", token);
               setTimeout(() => {
