@@ -1,3 +1,5 @@
+//!IMPORTANT I MADE ONLY BASIC VALIDATIONS JUST TO DO SOME
+
 const validate = (form, errorsState) => {
   const errors = { ...errorsState };
 
@@ -9,8 +11,8 @@ const validate = (form, errorsState) => {
 
   //password
   if (!form.password) errors.password = "";
-  else if (form.password.length < 3)
-    errors.password = "must have more that 6 letters";
+  else if (form.password.length < 5)
+    errors.password = "must have more that 5 letters";
   else errors.password = "";
 
   //confirm
