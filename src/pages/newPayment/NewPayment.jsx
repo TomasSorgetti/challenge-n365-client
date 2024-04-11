@@ -5,8 +5,10 @@ import axios from "axios";
 import { URL_BASE } from "../../utils/constants";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const NewPayment = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
     amount: "",
     paymentType: "",
@@ -35,6 +37,7 @@ const NewPayment = () => {
     )
       notifyWarn();
     else {
+      setIsLoading(true);
       const URL = `${URL_BASE}/payments`;
       const token = localStorage.getItem("token");
       try {
@@ -46,6 +49,7 @@ const NewPayment = () => {
           })
           .then((response) => {
             if (response) {
+              setIsLoading(false);
               notifyOk();
               setForm({
                 amount: "",
@@ -56,15 +60,29 @@ const NewPayment = () => {
             }
           });
       } catch (error) {
+        setIsLoading(false);
         notifyError();
         console.log("Error to post new payment", error);
       }
     }
   };
+
+  const override = {
+    position: "absolute",
+    top: "140px",
+  };
   return (
     <div className="flex flex-col h-screen">
       <Navigation />
       <main className="flex-1 flex items-center justify-center">
+        <ClipLoader
+          color={"#0d0b1f"}
+          loading={isLoading}
+          size={30}
+          cssOverride={override}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
         <ToastContainer position="bottom-left" autoClose={2000} />
         <Link
           to={"/home"}

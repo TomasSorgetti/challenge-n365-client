@@ -6,9 +6,11 @@ import axios from "axios";
 import validate from "./Validation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -43,10 +45,12 @@ const Register = () => {
       !errors.password &&
       !errors.confirm
     ) {
+      setIsLoading(true);
       const URL = `${URL_BASE}/user`;
       try {
         await axios.post(URL, form).then((response) => {
           if (response) {
+            setIsLoading(false);
             const token = response.data.token;
             if (token) {
               localStorage.setItem("token", token);
@@ -58,6 +62,7 @@ const Register = () => {
           }
         });
       } catch (error) {
+        setIsLoading(false);
         notifyError();
         if (error.response.data.error) {
           setErrors((prevErrors) => ({
@@ -69,8 +74,21 @@ const Register = () => {
       }
     } else notifyWarn();
   };
+
+  const override = {
+    position: "absolute",
+    top: "40px",
+  };
   return (
     <section className="h-screen flex items-center justify-center text-white">
+      <ClipLoader
+        color={"#0d0b1f"}
+        loading={isLoading}
+        size={30}
+        cssOverride={override}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
       <ToastContainer position="bottom-left" autoClose={1000} />
       <form
         onSubmit={handleSubmit}

@@ -3,10 +3,12 @@ import logo from "../../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { URL_BASE } from "../../utils/constants";
 import axios from "axios";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Login = () => {
   const navigate = useNavigate();
   const [errors, setErrors] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -22,10 +24,12 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (form.email && form.password) {
+      setIsLoading(true);
       const URL = `${URL_BASE}/user/login`;
       try {
         await axios.post(URL, form).then((response) => {
           if (!response) throw new Error("error to login");
+          setIsLoading(false);
           const token = response.data.token;
           if (token) {
             localStorage.setItem("token", token);
@@ -33,14 +37,27 @@ const Login = () => {
           }
         });
       } catch (error) {
+        setIsLoading(false);
         if (error.response.data.error) setErrors(error.response.data.error);
         console.log(error);
       }
     }
   };
 
+  const override = {
+    position: "absolute",
+    top: "40px",
+  };
   return (
-    <section className="h-screen flex items-center justify-center text-white">
+    <section className="relative h-screen flex items-center justify-center text-white">
+      <ClipLoader
+        color={"#0d0b1f"}
+        loading={isLoading}
+        size={30}
+        cssOverride={override}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
       <form
         onSubmit={handleSubmit}
         action=""

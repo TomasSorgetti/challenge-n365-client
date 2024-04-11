@@ -10,8 +10,10 @@ import exportIcon from "../../assets/export-icon.png";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import { Link } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Home = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState({
     payments: [],
     pages: 1,
@@ -30,6 +32,7 @@ const Home = () => {
 
   useEffect(() => {
     const getData = async () => {
+      setIsLoading(true);
       const URL = `${URL_BASE}/payments?name=${search.name}&order=${search.order}&orderBy=${search.orderBy}&filter=${search.filter}&page=${search.page}&minAmount=${search.minAmount}&maxAmount=${search.maxAmount}&minDate=${search.minDate}&maxDate=${search.maxDate}`;
       const token = localStorage.getItem("token");
       await axios(URL, {
@@ -38,9 +41,13 @@ const Home = () => {
         },
       })
         .then((response) => {
-          setData(response.data);
+          if (response) {
+            setIsLoading(false);
+            setData(response.data);
+          }
         })
         .catch((error) => {
+          setIsLoading(false);
           console.error("Error fetching data:", error);
         });
     };
@@ -83,10 +90,24 @@ const Home = () => {
     }
   };
 
+  const override = {
+    position: "absolute",
+    top: "90px",
+    left: "50%",
+  };
+
   return (
     <>
       <Navigation />
       <main className="lg:mt-10">
+        <ClipLoader
+          color={"#0d0b1f"}
+          loading={isLoading}
+          size={30}
+          cssOverride={override}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
         <article className="flex gap-10 p-4 lg:mx-auto lg:w-11/12 justify-center lg:justify-end ">
           <button
             className="text-primary font-bold flex items-center hover:underline"
