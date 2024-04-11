@@ -4,14 +4,18 @@ import { Link, useNavigate } from "react-router-dom";
 import { URL_BASE } from "../../utils/constants";
 import axios from "axios";
 import ClipLoader from "react-spinners/ClipLoader";
+import { useEffect } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
   const [errors, setErrors] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [persist, setPersist] = useState(false);
+  const rememberEmail = localStorage.getItem("email");
+  const rememberPassword = localStorage.getItem("password");
   const [form, setForm] = useState({
-    email: "",
-    password: "",
+    email: rememberEmail || "",
+    password: rememberPassword || "",
   });
 
   const handleChange = (event) => {
@@ -43,6 +47,31 @@ const Login = () => {
       }
     }
   };
+
+  //! Do not trust this code, its just a test xd
+  //* Persist account values
+  const togglePersist = () => {
+    setPersist((prev) => {
+      const newValue = !prev;
+      localStorage.setItem("persist", newValue);
+      return newValue;
+    });
+  };
+  useEffect(() => {
+    const persistedValue = localStorage.getItem("persist");
+    if (persistedValue !== null) {
+      setPersist(persistedValue === "true");
+    }
+  }, []);
+  useEffect(() => {
+    if (persist) {
+      localStorage.setItem("email", form.email);
+      localStorage.setItem("password", form.password);
+    } else {
+      localStorage.removeItem("email");
+      localStorage.removeItem("password");
+    }
+  }, [persist, form.email, form.password]);
 
   const override = {
     position: "absolute",
@@ -89,6 +118,16 @@ const Login = () => {
               value={form.password}
               onChange={handleChange}
             />
+          </div>
+          <div className="flex gap-2 justify-start">
+            <input
+              onChange={togglePersist}
+              checked={persist}
+              type="checkbox"
+              name="persist"
+              id=""
+            />
+            <label htmlFor="">Remember me?</label>
           </div>
         </div>
         <div className="flex flex-col gap-6 mt-10 xl:mt-14">
