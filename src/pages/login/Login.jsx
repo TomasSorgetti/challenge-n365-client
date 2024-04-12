@@ -31,6 +31,19 @@ const Login = () => {
       setIsLoading(true);
       const URL = `${URL_BASE}/user/login`;
       try {
+      //   let headers = new Headers();
+      //   headers.append("Content-Type", "application/json");
+      //   headers.append("Accept", "application/json");
+      //   await fetch(URL, {
+      //   method: "POST",
+      //   mode: "cors",
+      //   credentials: "include",
+      //   headers: headers,
+      //   body: JSON.stringify({
+      //     email: form.email,
+      //     password: form.password,
+      //   }),
+      // });
         await axios.post(URL, form).then((response) => {
           if (!response) throw new Error("error to login");
           setIsLoading(false);

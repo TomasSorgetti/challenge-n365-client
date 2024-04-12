@@ -125,15 +125,15 @@ const Home = () => {
         </article>
         <Searchbar search={search} setSearch={setSearch} />
         <section className="w-11/12 overflow-x-auto mx-auto my-2">
-          <table
+          <section
             className="w-full
         "
           >
-            <thead>
+            <article>
               <Table setSearch={setSearch} search={search} />
-            </thead>
+            </article>
             <Cards data={data.payments} />
-          </table>
+          </section>
         </section>
 
         <section
