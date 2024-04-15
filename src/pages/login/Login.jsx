@@ -5,6 +5,7 @@ import { URL_BASE } from "../../utils/constants";
 import axios from "axios";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useEffect } from "react";
+import CryptoJS from "crypto-js";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -31,19 +32,19 @@ const Login = () => {
       setIsLoading(true);
       const URL = `${URL_BASE}/user/login`;
       try {
-      //   let headers = new Headers();
-      //   headers.append("Content-Type", "application/json");
-      //   headers.append("Accept", "application/json");
-      //   await fetch(URL, {
-      //   method: "POST",
-      //   mode: "cors",
-      //   credentials: "include",
-      //   headers: headers,
-      //   body: JSON.stringify({
-      //     email: form.email,
-      //     password: form.password,
-      //   }),
-      // });
+        //   let headers = new Headers();
+        //   headers.append("Content-Type", "application/json");
+        //   headers.append("Accept", "application/json");
+        //   await fetch(URL, {
+        //   method: "POST",
+        //   mode: "cors",
+        //   credentials: "include",
+        //   headers: headers,
+        //   body: JSON.stringify({
+        //     email: form.email,
+        //     password: form.password,
+        //   }),
+        // });
         await axios.post(URL, form).then((response) => {
           if (!response) throw new Error("error to login");
           setIsLoading(false);
@@ -66,25 +67,44 @@ const Login = () => {
   const togglePersist = () => {
     setPersist((prev) => {
       const newValue = !prev;
+      if (newValue) {
+        const encryptedEmail = CryptoJS.AES.encrypt(
+          form.email,
+          "secret key"
+        ).toString();
+        const encryptedPassword = CryptoJS.AES.encrypt(
+          form.password,
+          "secret key"
+        ).toString();
+        localStorage.setItem("email", encryptedEmail);
+        localStorage.setItem("password", encryptedPassword);
+      } else {
+        localStorage.removeItem("email");
+        localStorage.removeItem("password");
+      }
       localStorage.setItem("persist", newValue);
       return newValue;
     });
   };
   useEffect(() => {
     const persistedValue = localStorage.getItem("persist");
-    if (persistedValue !== null) {
-      setPersist(persistedValue === "true");
+    if (persistedValue) {
+      const encryptedEmail = localStorage.getItem("email");
+      const encryptedPassword = localStorage.getItem("password");
+      if (encryptedEmail && encryptedPassword) {
+        const decryptedEmail = CryptoJS.AES.decrypt(
+          encryptedEmail,
+          "secret key"
+        ).toString(CryptoJS.enc.Utf8);
+        const decryptedPassword = CryptoJS.AES.decrypt(
+          encryptedPassword,
+          "secret key"
+        ).toString(CryptoJS.enc.Utf8);
+        setForm({ email: decryptedEmail, password: decryptedPassword });
+      }
+      setPersist(true);
     }
   }, []);
-  useEffect(() => {
-    if (persist) {
-      localStorage.setItem("email", form.email);
-      localStorage.setItem("password", form.password);
-    } else {
-      localStorage.removeItem("email");
-      localStorage.removeItem("password");
-    }
-  }, [persist, form.email, form.password]);
 
   const override = {
     position: "absolute",
