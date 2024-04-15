@@ -151,14 +151,20 @@ const Payment = () => {
               <label className="text-white font-semibold">
                 Type of payment:
               </label>
-              <input
-                type="text"
-                name="paymentType"
-                value={form.paymentType}
+              <select
+                className="text-primary h-10 rounded-sm p-2"
                 onChange={handleChange}
-                className="h-10 rounded-sm p-2 text-primary"
-                placeholder="something"
-              />
+                name="paymentType"
+                key={form.paymentType}
+                value={form.paymentType}
+                id=""
+              >
+                <option value=""></option>
+                <option value="check">check</option>
+                <option value="debit">debit</option>
+                <option value="transfer">transfer</option>
+                <option value="credit">credit</option>
+              </select>
             </div>
             <div className="flex flex-col">
               <label className="text-white font-semibold">Addressee:</label>
