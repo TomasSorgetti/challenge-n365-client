@@ -63,7 +63,6 @@ const Login = () => {
   };
 
   //! Do not trust this code, its just a test xd
-  //* Persist account values
   const togglePersist = () => {
     setPersist((prev) => {
       const newValue = !prev;
