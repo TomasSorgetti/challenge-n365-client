@@ -12,11 +12,30 @@ const Login = () => {
   const [errors, setErrors] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [persist, setPersist] = useState(false);
-  const rememberEmail = localStorage.getItem("email");
-  const rememberPassword = localStorage.getItem("password");
+
+  //**** useEffect for set initial form with the remembered data
+  useEffect(() => {
+    const encryptedEmail = localStorage.getItem("email");
+    const encryptedPassword = localStorage.getItem("password");
+    if (encryptedEmail && encryptedPassword) {
+      const decryptedEmail = CryptoJS.AES.decrypt(
+        encryptedEmail,
+        "something secret"
+      ).toString(CryptoJS.enc.Utf8);
+      const decryptedPassword = CryptoJS.AES.decrypt(
+        encryptedPassword,
+        "something secret"
+      ).toString(CryptoJS.enc.Utf8);
+      setForm({
+        email: decryptedEmail || "",
+        password: decryptedPassword || "",
+      });
+    }
+  }, []);
+
   const [form, setForm] = useState({
-    email: rememberEmail || "",
-    password: rememberPassword || "",
+    email: "",
+    password: "",
   });
 
   const handleChange = (event) => {
@@ -63,47 +82,37 @@ const Login = () => {
   };
 
   //! Do not trust this code, its just a test xd
+
   const togglePersist = () => {
     setPersist((prev) => {
       const newValue = !prev;
-      if (newValue) {
-        const encryptedEmail = CryptoJS.AES.encrypt(
-          form.email,
-          "secret key"
-        ).toString();
-        const encryptedPassword = CryptoJS.AES.encrypt(
-          form.password,
-          "secret key"
-        ).toString();
-        localStorage.setItem("email", encryptedEmail);
-        localStorage.setItem("password", encryptedPassword);
-      } else {
-        localStorage.removeItem("email");
-        localStorage.removeItem("password");
-      }
       localStorage.setItem("persist", newValue);
       return newValue;
     });
   };
   useEffect(() => {
     const persistedValue = localStorage.getItem("persist");
-    if (persistedValue) {
-      const encryptedEmail = localStorage.getItem("email");
-      const encryptedPassword = localStorage.getItem("password");
-      if (encryptedEmail && encryptedPassword) {
-        const decryptedEmail = CryptoJS.AES.decrypt(
-          encryptedEmail,
-          "secret key"
-        ).toString(CryptoJS.enc.Utf8);
-        const decryptedPassword = CryptoJS.AES.decrypt(
-          encryptedPassword,
-          "secret key"
-        ).toString(CryptoJS.enc.Utf8);
-        setForm({ email: decryptedEmail, password: decryptedPassword });
-      }
-      setPersist(true);
+    if (persistedValue !== null) {
+      setPersist(persistedValue === "true");
     }
   }, []);
+  useEffect(() => {
+    if (persist) {
+      const encryptedEmail = CryptoJS.AES.encrypt(
+        form.email,
+        "something secret"
+      ).toString();
+      const encryptedPassword = CryptoJS.AES.encrypt(
+        form.password,
+        "something secret"
+      ).toString();
+      localStorage.setItem("email", encryptedEmail);
+      localStorage.setItem("password", encryptedPassword);
+    } else {
+      localStorage.removeItem("email");
+      localStorage.removeItem("password");
+    }
+  }, [persist, form.email, form.password]);
 
   const override = {
     position: "absolute",
