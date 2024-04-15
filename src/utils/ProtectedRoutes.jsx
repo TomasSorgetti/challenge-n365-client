@@ -1,20 +1,16 @@
 import { Outlet, Navigate } from "react-router-dom";
 
-export const ProtectedRoutes = () => {
+const useAuth = () => {
   const token = localStorage.getItem("token");
-  const condition = typeof token === "string" ? true : false;
-  if (!condition) {
-    return <Navigate to={"/"} />;
-  }
-
-  return <Outlet />;
+  return token != null;
 };
-export const ProtectedLoginRoute = () => {
-  const token = localStorage.getItem("token");
-  const condition = typeof token === "string" ? true : false;
-  if (condition) {
-    return <Navigate to={"/home"} />;
-  }
 
-  return <Outlet />;
+export const ProtectedRoutes = () => {
+  const isAuth = useAuth();
+  return isAuth ? <Outlet /> : <Navigate to="/" />;
+};
+
+export const ProtectedLoginRoute = () => {
+  const isAuth = useAuth();
+  return !isAuth ? <Outlet /> : <Navigate to="/home" />;
 };
