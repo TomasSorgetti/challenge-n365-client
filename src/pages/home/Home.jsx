@@ -23,8 +23,8 @@ const Home = () => {
     filter: "",
     order: "asc",
     orderBy: "paymentDate",
-    minAmount: "",
-    maxAmount: "",
+    minAmount: 0,
+    maxAmount: null,
     minDate: "",
     maxDate: "",
     page: 1,
@@ -65,9 +65,10 @@ const Home = () => {
       setSearch({ ...search, page: pageNumber });
     }
   };
+
   const handleDownload = async (event) => {
     event.preventDefault();
-    const URL = `${URL_BASE}/excel`;
+    const URL = `${URL_BASE}/excel?name=${search.name}&order=${search.order}&orderBy=${search.orderBy}&filter=${search.filter}&minAmount=${search.minAmount}&maxAmount=${search.maxAmount}&minDate=${search.minDate}&maxDate=${search.maxDate}`;
 
     const token = localStorage.getItem("token");
     try {
