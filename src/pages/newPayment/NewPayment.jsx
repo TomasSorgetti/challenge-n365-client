@@ -23,6 +23,8 @@ const NewPayment = () => {
     setForm({ ...form, [property]: value });
   };
 
+  
+  //********** Alerts **********/
   const notifyOk = () => toast.success("You have create a new payment");
   const notifyError = () => toast.error("Error creating new payment");
   const notifyWarn = () => toast.warn("Complete all fields");

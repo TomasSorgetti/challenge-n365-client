@@ -30,6 +30,8 @@ const Home = () => {
     page: 1,
   });
 
+
+  //*********** UseEffect for get Payments list ***********//
   useEffect(() => {
     const getData = async () => {
       setIsLoading(true);
@@ -52,7 +54,8 @@ const Home = () => {
         });
     };
 
-    const debouncedGetData = debounce(getData, 100);
+    //? Debounce for delay the search, so do not search for each letter you tip
+    const debouncedGetData = debounce(getData, 150);
     debouncedGetData();
     return () => {
       debouncedGetData.cancel();
@@ -66,6 +69,8 @@ const Home = () => {
     }
   };
 
+
+  //**********  Download Excel Function  **********//
   const handleDownload = async (event) => {
     event.preventDefault();
     const URL = `${URL_BASE}/excel?name=${search.name}&order=${search.order}&orderBy=${search.orderBy}&filter=${search.filter}&minAmount=${search.minAmount}&maxAmount=${search.maxAmount}&minDate=${search.minDate}&maxDate=${search.maxDate}`;

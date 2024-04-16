@@ -21,6 +21,7 @@ const Payment = () => {
   const token = localStorage.getItem("token");
   const URL = `${URL_BASE}/payments/${paymentId}`;
 
+  //*********** useEffect for search payment data ************/
   useEffect(() => {
     const getData = async () => {
       try {
@@ -38,6 +39,7 @@ const Payment = () => {
     getData();
   }, []);
 
+  //*********** useEffect for set the form when get payment Data ************/
   useEffect(() => {
     setForm({
       amount: data.amount || "",
@@ -54,13 +56,14 @@ const Payment = () => {
     setForm({ ...form, [property]: value });
   };
 
+  //*********** Alerts ************/
   const notifyOk = () => toast.success("You have create a new payment");
   const notifyError = () => toast.error("Error creating new payment");
   const notifyWarn = () => toast.warn("Complete all fields");
-
   const notifyDelete = () => toast.success("You have delete payment");
   const notifyErrorDelete = () => toast.error("Error at delete payment");
 
+  //*********** Update Payment Function ************/
   const handleUpdate = async (event) => {
     event.preventDefault();
     if (
@@ -89,6 +92,8 @@ const Payment = () => {
       }
     }
   };
+
+  //*********** Delete Payment Function ************/
   const handleDelete = async () => {
     Swal.fire({
       icon: "error",

@@ -30,6 +30,7 @@ const Register = () => {
     setForm({ ...form, [property]: value });
   };
 
+  //******** Alerts ********/
   const notifyOk = () => toast.success("You have create a new account");
   const notifyError = () => toast.error("Error creating account");
   const notifyWarn = () => toast.warn("Complete fields");
