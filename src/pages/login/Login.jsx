@@ -67,7 +67,7 @@ const Login = () => {
         await axios.post(URL, form).then((response) => {
           if (!response) throw new Error("error to login");
           setIsLoading(false);
-          const token = response.data.token;
+          const token = response.data.payload.token;
           if (token) {
             localStorage.setItem("token", token);
             navigate("/home");
@@ -75,7 +75,7 @@ const Login = () => {
         });
       } catch (error) {
         setIsLoading(false);
-        if (error.response.data.error) setErrors(error.response.data.error);
+        if (error.response.data.error) setErrors(error.response.data.message);
         console.log(error);
       }
     }

@@ -52,7 +52,7 @@ const Register = () => {
         await axios.post(URL, form).then((response) => {
           if (response) {
             setIsLoading(false);
-            const token = response.data.token;
+            const token = response.data.payload.token;
             if (token) {
               localStorage.setItem("token", token);
               setTimeout(() => {
@@ -68,7 +68,7 @@ const Register = () => {
         if (error.response.data.error) {
           setErrors((prevErrors) => ({
             ...prevErrors,
-            errorResponse: error.response.data.error,
+            errorResponse: error.response.data.message,
           }));
         }
         console.log(error);
