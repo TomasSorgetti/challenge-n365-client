@@ -30,7 +30,6 @@ const Home = () => {
     page: 1,
   });
 
-
   //*********** UseEffect for get Payments list ***********//
   useEffect(() => {
     const getData = async () => {
@@ -45,7 +44,7 @@ const Home = () => {
         .then((response) => {
           if (response) {
             setIsLoading(false);
-            setData(response.data);
+            setData(response.data.payload);
           }
         })
         .catch((error) => {
@@ -68,7 +67,6 @@ const Home = () => {
       setSearch({ ...search, page: pageNumber });
     }
   };
-
 
   //**********  Download Excel Function  **********//
   const handleDownload = async (event) => {
